@@ -1,0 +1,30 @@
+services:
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: planner
+      POSTGRES_PASSWORD: planner
+      POSTGRES_DB: planner
+    ports:
+      - "5432:5432"
+    volumes:
+      - planner_db:/var/lib/postgresql/data
+      - ./migrations:/docker-entrypoint-initdb.d:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U planner"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+
+  bot:
+    build: .
+    env_file: .env
+    environment:
+      DATABASE_URL: postgresql://planner:planner@db:5432/planner
+    depends_on:
+      db:
+        condition: service_healthy
+    restart: unless-stopped
+
+volumes:
+  planner_db:
