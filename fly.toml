@@ -1,0 +1,26 @@
+# Fly.io app config for the Telegram planner bot.
+# After running `fly launch --no-deploy`, replace `app` with the name Fly assigns
+# (or any unique name) and commit the change.
+
+app = "CHANGE-ME-planner-bot"
+primary_region = "fra"  # Frankfurt — лучший пинг до Tashkent среди free-tier регионов
+kill_signal = "SIGINT"
+kill_timeout = "30s"
+
+[build]
+  # Dockerfile в корне репо
+
+[env]
+  LOG_LEVEL = "INFO"
+  DEFAULT_TIMEZONE = "Asia/Tashkent"
+  DEFAULT_LANGUAGE = "ru"
+
+# Бот работает по long-polling, HTTP-эндпоинтов нет — service блоки не нужны.
+# Машина просто крутит `python -m bot.main` и слушает Telegram.
+
+[[vm]]
+  size = "shared-cpu-1x"
+  memory = "256mb"
+
+[deploy]
+  strategy = "immediate"

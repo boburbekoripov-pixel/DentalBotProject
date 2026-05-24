@@ -33,6 +33,11 @@ docker compose up --build
 
 Postgres поднимется автоматически, миграция применится при старте бота.
 
+## Продакшн деплой
+
+Полная пошаговая инструкция: **[DEPLOY.md](./DEPLOY.md)** —
+Fly.io + Supabase + GitHub Actions auto-deploy, всё в браузере (~15 минут).
+
 ## Локальный запуск без Docker
 
 ```bash
